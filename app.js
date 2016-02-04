@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var app = express();
 
-var server = require('http').createServer(app).listen(3000, function(){console.log('ready to work');});
+var server = require('http').createServer(app).listen(process.env.PORT || 5000, function(){console.log('ready to work');});
 var io = require('socket.io').listen(server);
 var ww = require('./wwgame.js');
 var router = require('./routes/index');
