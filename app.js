@@ -7,6 +7,9 @@ var io = require('socket.io').listen(server);
 var ww = require('./wwgame.js');
 var router = require('./routes/index');
 
+var players=0;
+
+
 io.on('connection', onConnection);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -19,4 +22,19 @@ function onConnection(sock){
   sock.on('msg', function(txt){
     io.emit('msg', txt);
   });
+  newPlayer(sock, 'lobby');
+
+
+  sock.on('disconnect', function(){
+    players--;
+    sock.to('lobby').emit('msg', 'A player has left! There are now ' + players + ' players in the lobby.');
+  });
 }
+
+function newPlayer(player, roomName){
+  player.join(roomName);
+  players++;
+  player.emit('msg', 'Welcome to ' + roomName + '! There are currently ' + players + ' players in the lobby.');
+  player.to('lobby').emit('msg', 'There are now ' + players + ' players in the lobby.');
+}
+
