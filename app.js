@@ -23,12 +23,6 @@ function onConnection(sock){
     io.emit('msg', txt);
   });
   newPlayer(sock, 'lobby');
-
-
-  sock.on('disconnect', function(){
-    players--;
-    sock.to('lobby').emit('msg', 'A player has left! There are now ' + players + ' players in the lobby.');
-  });
 }
 
 function newPlayer(player, roomName){
@@ -36,5 +30,10 @@ function newPlayer(player, roomName){
   players++;
   player.emit('msg', 'Welcome to ' + roomName + '! There are currently ' + players + ' players in the lobby.');
   player.to('lobby').emit('msg', 'There are now ' + players + ' players in the lobby.');
+
+  player.on('disconnect', function(){
+    players--;
+    sock.to(roomName).emit('msg', 'A player has left! There are now ' + players + ' players in the lobby.');
+  });
 }
 

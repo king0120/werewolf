@@ -8,7 +8,8 @@ body
   ul#chat
 
   form#chat-form
-    input#chat-input
+    input#chat-input(placeholder="Chat")
+    input#chat-name(placeholder="Username")
     button Send
   script(src='./socket.io/socket.io.js')
   script(src='/js/client.js')

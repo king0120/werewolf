@@ -14,8 +14,9 @@ var form = document.getElementById('chat-form');
 
 form.addEventListener('submit', function(e){
   var input = document.getElementById('chat-input');
+  var username = document.getElementById('chat-name').value;
   var value = input.value;
   input.value = '';
-  sock.emit('msg', value);
+  sock.emit('msg', username + ": " + value);
   e.preventDefault();
 });
