@@ -1,0 +1,22 @@
+console.log("Hello from client.js");
+
+var sock = io();
+sock.on('msg', onMessage);
+
+function onMessage(text){
+  var list = document.getElementById('chat');
+  var el = document.createElement('li');
+  el.innerHTML = text;
+  list.appendChild(el);
+}
+
+var form = document.getElementById('chat-form');
+
+form.addEventListener('submit', function(e){
+  var input = document.getElementById('chat-input');
+  var username = document.getElementById('chat-name').value;
+  var value = input.value;
+  input.value = '';
+  sock.emit('msg', username + ": " + value);
+  e.preventDefault();
+});

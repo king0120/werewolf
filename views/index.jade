@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-html(lang="en")
-head
-  meta(charset="UTF-8")
-  title Document
-body
-  h1 Hello World!
-  ul#chat
+extends layout
 
-  form#chat-form
-    input#chat-input(placeholder="Chat")
-    input#chat-name(placeholder="Username")
-    button Send
-  script(src='./socket.io/socket.io.js')
-  script(src='/js/client.js')
+block content
+  body
+    .jumbotron
+      h1 Hello World!
+    //- block landingPage
+
+    ul#chat
+
+    form#chat-form
+      input#chat-input(placeholder="Chat")
+      input#chat-name(placeholder="Username")
+      button Send
+    script(src='./socket.io/socket.io.js')
+    script(src='/js/client.js')
