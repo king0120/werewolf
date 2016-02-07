@@ -2,8 +2,6 @@
 var express = require('express');
 //Use path to render styles
 var path = require('path');
-//Import Sass
-var sass = require('node-sass-middleware');
 //Create new instance of express
 var app = express();
 //Create a new server
