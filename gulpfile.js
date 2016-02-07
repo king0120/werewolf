@@ -31,12 +31,9 @@ gulp.task('styles', function(){
     .pipe(gulp.dest('public/css/'));
 });
 
-gulp.task('bootStyles', function(){
-  // minifies bootstrap sass
-  sass('node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss', {style: 'compressed'})
-    .on('error', errorLog)
-    .pipe(prefix({prowsers: ['last 2 versions']}))
-    .pipe(gulp.dest('public/css/'));
+gulp.task('watch', function(){
+  gulp.watch('scss/*.scss',['styles']);
+  gulp.watch('js/*.js',['scripts']);
 });
 
 //Image Task
@@ -48,7 +45,7 @@ gulp.task('image', function(){
 });
 
 gulp.task('default', [
-  'bootStyles',
+  'watch',
   'scripts',
   'styles'
 ]);

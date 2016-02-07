@@ -1,16 +1,22 @@
 extends layout
 
+
 block content
-  body
+  body.container-fluid
     .jumbotron
-      h1 Hello World!
+      h1 WEREWOLF
+      h2 A Party Game
     //- block landingPage
 
-    ul#chat
+    h4.text-center#players
+    div.buttonStart
+      button#startGame.center-block.btn-lg.btn.btn-success Start Game
 
-    form#chat-form
-      input#chat-input(placeholder="Chat")
-      input#chat-name(placeholder="Username")
-      button Send
+    h4#waiting
+    include ./chat.jade
+    script(src='http://code.jquery.com/jquery-1.12.0.min.js')
     script(src='./socket.io/socket.io.js')
     script(src='/js/client.js')
+
+
+

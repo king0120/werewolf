@@ -1,7 +1,23 @@
-console.log("Hello from client.js");
-
 var sock = io();
+var players = 0;
 sock.on('msg', onMessage);
+
+//When a player joins, The #players string updates
+sock.on('players', function(data){
+  console.log('data');
+  $('#players').text(data);
+  // players = data;
+  // if (data >= 3){
+  //   $('#startGame').show();
+  // }
+});
+
+//When the startgame button is clicked, the game will begin
+$('#startGame').on('click', function(){
+  players--;
+  $('#waiting').show();
+  $('#waiting').append('Waiting on ' + players + ' other players.');
+});
 
 function onMessage(text){
   var list = document.getElementById('chat');
