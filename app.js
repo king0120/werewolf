@@ -1,44 +1,29 @@
+//Import Express
 var express = require('express');
+//Use path to render styles
 var path = require('path');
+//Import Sass
 var sass = require('node-sass-middleware');
+//Create new instance of express
 var app = express();
+//Create a new server
 var server = require('http').createServer(app).listen(process.env.PORT || 3000, function(){console.log('ready to work');});
 var io = require('socket.io').listen(server);
+
+//import the werewolf game file
 var ww = require('./wwgame.js');
+
+//import the routes (not really necesarry?)
 var router = require('./routes/index');
 
-var players=0;
+//Start socket io on connection
+io.sockets.on('connection', function (socket) {
+    //console.log('client connected');
+    ww.initGame(io, socket);
+});
 
-
-io.on('connection', onConnection);
 app.set('view options',{layout:false});
 app.set('view engine', 'jade');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', router);
-
-function onConnection(socket){
-  socket.on('msg', function(txt){
-    io.emit('msg', txt);
-  });
-  newPlayer(socket, 'lobby');
-
-}
-
-function newPlayer(player, roomName){
-  player.join(roomName);
-  players++;
-
-  player.to(roomName).emit('players', 'There are now ' + players + ' players in the lobby.');
-
-  player.emit('players', 'Welcome to ' + roomName + '! There are currently ' + players + ' players in the lobby.');
-
-
-
-  player.on('disconnect', function(){
-    players--;
-    player.to(roomName).emit('players', 'A player has left! There are now ' + players + ' players in the lobby.');
-  });
-}
-
-

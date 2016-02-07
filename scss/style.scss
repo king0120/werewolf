@@ -6,10 +6,15 @@
 }
 
 .buttonStart{
-  position: relative;
-  width: 200px;
+  display: flex;
+  width: 600px;
+  justify-content: space-between;
   margin: 0 auto;
 }
-#startGame{
+.btn{
+  display: inline;
+}
+
+.hostScreen {
   display: none;
 }

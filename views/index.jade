@@ -3,20 +3,25 @@ extends layout
 
 block content
   body.container-fluid
-    .jumbotron
-      h1 WEREWOLF
-      h2 A Party Game
-    //- block landingPage
+      .jumbotron
+        h1 WEREWOLF
+        h2 A Party Game
+        h3= page
+      .introScreen
+        h4.text-center#players
+        div.buttonStart
+          button#hostGame.center-block.btn-lg.btn.btn-success Host
+          button#playerGame.center-block.btn-lg.btn.btn-success Player
+      .hostScreen
+        h1.hostSite Open this page on your smartphone:
+        h2.serverAddress
+        h3.hostJoin Then click JOIN and enter the following lobby number.
+        h4.lobbyAddress
 
-    h4.text-center#players
-    div.buttonStart
-      button#startGame.center-block.btn-lg.btn.btn-success Start Game
 
     h4#waiting
     include ./chat.jade
-    script(src='http://code.jquery.com/jquery-1.12.0.min.js')
-    script(src='./socket.io/socket.io.js')
-    script(src='/js/client.js')
+
 
 
 
