@@ -1,51 +1,67 @@
-var players = 0;
-var playerNames = [];
+var io;
+var gamesocket;
 
 exports.initGame = function(io, socket) {
   console.log('init');
-
+  gameSocket = socket;
+  gameSocket.emit('connected');
   //Game Events
-  socket.on('msg', chat);
-  socket.on('hostCreateGame', hostCreateGame);
-  // socket.set('nickname', 'Guest');
+  gameSocket.on('msg', chat);
 
-  newPlayer(socket, 'lobby');
+  //Host Events
+  gameSocket.on('hostCreateGame', hostCreateGame);
 
-  socket.on('username', function(username) {
-    socket.username = username;
-  });
+  //Player Events
+  gameSocket.on('playerJoinGame', playerJoinGame);
+
 
   //Host Functions
   function hostCreateGame(){
     //create a unique game id
     var thisGameId = Math.floor(Math.random() * 500);
 
+    console.log('joined ' + thisGameId);
+    console.log(thisGameId.toString());
+
+    this.join(thisGameId.toString());
+
+
+    console.log(gameSocket.rooms);
+
     this.emit('newGameCreated', {
       gameId: thisGameId,
       mySocketId: this.id
     });
-    page = 'host';
-    console.log('joined ' + thisGameId);
-    this.join(thisGameId.toString());
-
   }
 
-  function newPlayer(player, roomName) {
-    console.log(player.id + ' connected');
-    player.join(roomName);
-    players++;
+  //Player functions
 
-    player.to(roomName).emit('players', 'There are now ' + players + ' players in the lobby.');
+  //Player Clicked Join Game and entered the appropriate lobby (hopefully)
+  //data contains username and gameId
+  function playerJoinGame(data){
+    console.log('Player ' + data.username + ' is attempting to join game #' + data.gameId);
+    console.log(data.gameId);
+    console.log(this.rooms);
+    console.log(gameSocket.rooms);
+    // console.log(data.gameId);
+    //finds roomId in the Socket.io manager object
+    var room = gameSocket.rooms[data.gameId];
+    console.log(room);
+    if (room !== undefined){
+      //attaches socketId to the data object
+      data.mySocketId = this.id;
 
-    player.emit('players', 'Welcome to ' + roomName + '! There are currently ' + players + ' players in the lobby.', players);
+      //join the room
+      this.join(data.gameId);
 
+      console.log("Player " + data.username+ " joined game " + data.gameId);
 
-
-    player.on('disconnect', function() {
-      players--;
-      console.log(player.id + ' disconnected');
-      player.to(roomName).emit('players', 'A player has left! There are now ' + players + ' players in the lobby.');
-    });
+      //emits message notifying a player entering lobby
+      io.sockets.in(data.gameId.toString()).emit('playerJoinedRoom', data);
+    } else {
+      //Send error message to server
+      console.log('error');
+    }
   }
 
   function chat(txt) {

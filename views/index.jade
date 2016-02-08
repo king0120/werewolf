@@ -13,13 +13,23 @@ block content
           button#hostGame.center-block.btn-lg.btn.btn-success Host
           button#playerGame.center-block.btn-lg.btn.btn-success Player
       .hostScreen
+        p#playersWaiting
         h1.hostSite Open this page on your smartphone:
         h2.serverAddress
         h3.hostJoin Then click JOIN and enter the following lobby number.
         h4.lobbyAddress
+        button#startGameButton.btn.btn-lg.btn-warning
+      .joinScreen
+        .info
+          label(for="inputUsername") Your Name:
+          input(type="text" id="inputUsername")
+        .info
+          label(for="inputLobby") Lobby Number:
+          input(type="text" id="inputLobby")
+        .info.buttons
+          button.btn#btnStart Start
+          #waitingMessage
 
-
-    h4#waiting
     include ./chat.jade
 
 

@@ -16,6 +16,10 @@ gulp.task('scripts', function(){
     .pipe(uglify())
     .on('error', errorLog)
     .pipe(gulp.dest('public/js/'));
+  gulp.src('node_modules/jquery/dist/jquery.min.js')
+    .pipe(uglify())
+    .on('error', errorLog)
+    .pipe(gulp.dest('public/js/'));
   gulp.src('js/*.js')
     .pipe(uglify())
     .on('error', errorLog)
